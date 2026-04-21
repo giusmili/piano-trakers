@@ -19,14 +19,14 @@
 
 ## Caractéristiques
 
-- **Minuteur 30 min** — démarrage, pause, réinitialisation avec barre de progression
-- **Calendrier mensuel** — visualisation des jours joués, navigation mois par mois
-- **Statistiques** — série en cours, total des séances, séances du mois
-- **Thème clair / sombre** — détection automatique du système + cookie persistant (zéro flash)
-- **Mobile-first** — touch targets 44px, safe-area insets, optimisé iOS & Android
-- **Hors-ligne** — service worker avec stratégies cache-first / network-first
-- **Persistance serveur** — sessions stockées dans `data/sessions.json` via API REST
-- **Cookies HTTP** — thème lu côté serveur pour un rendu sans flash dès le premier octet
+- **Minuteur 30 min**  démarrage, pause, réinitialisation avec barre de progression
+- **Calendrier mensuel**  visualisation des jours joués, navigation mois par mois
+- **Statistiques**  série en cours, total des séances, séances du mois
+- **Thème clair / sombre**  détection automatique du système + cookie persistant (zéro flash)
+- **Mobile-first**  touch targets 44px, safe-area insets, optimisé iOS & Android
+- **Hors-ligne**  service worker avec stratégies cache-first / network-first
+- **Persistance serveur**  sessions stockées dans `data/sessions.json` via API REST
+- **Cookies HTTP**  thème lu côté serveur pour un rendu sans flash dès le premier octet
 
 ---
 
@@ -127,7 +127,7 @@ npm run start
 
 <div align="center">
 
-© **Giusmili product** — 2026
+© **Giusmili product** - 2026
 
 *Fait avec Next.js & passion du piano*
 

@@ -1,0 +1,548 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&display=swap');
+
+/* ── Tokens ───────────────────────────────────────────────────────────────── */
+
+:root {
+  --blue-950: #060f23;
+  --blue-900: #0d1f45;
+  --blue-800: #1e3a6e;
+  --blue-700: #1d4ed8;
+  --blue-600: #2563b0;
+  --blue-500: #3b82f6;
+  --blue-400: #60a5fa;
+  --blue-300: #93c5fd;
+  --blue-200: #bfdbfe;
+  --blue-100: #dbeafe;
+  --blue-50:  #eff6ff;
+
+  --bg:           var(--blue-50);
+  --surface:      #ffffff;
+  --card-dark:    var(--blue-900);
+  --text:         var(--blue-950);
+  --text-muted:   var(--blue-800);
+  --accent:       var(--blue-500);
+  --border:       rgba(59,130,246,0.18);
+  --glow-1:       rgba(59,130,246,0.14);
+  --glow-2:       rgba(29,78,216,0.10);
+  --today-bg:     var(--blue-50);
+  --today-color:  var(--blue-700);
+  --toggle-bg:    var(--blue-100);
+  --toggle-color: var(--blue-700);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg:           #080f1e;
+    --surface:      #0f1b33;
+    --card-dark:    #050c1a;
+    --text:         #e2eaf8;
+    --text-muted:   var(--blue-300);
+    --border:       rgba(59,130,246,0.14);
+    --glow-1:       rgba(59,130,246,0.07);
+    --glow-2:       rgba(29,78,216,0.05);
+    --today-bg:     rgba(59,130,246,0.14);
+    --today-color:  var(--blue-300);
+    --toggle-bg:    #0f1b33;
+    --toggle-color: var(--blue-300);
+  }
+}
+
+:root[data-theme="dark"] {
+  --bg:           #080f1e;
+  --surface:      #0f1b33;
+  --card-dark:    #050c1a;
+  --text:         #e2eaf8;
+  --text-muted:   var(--blue-300);
+  --border:       rgba(59,130,246,0.14);
+  --glow-1:       rgba(59,130,246,0.07);
+  --glow-2:       rgba(29,78,216,0.05);
+  --today-bg:     rgba(59,130,246,0.14);
+  --today-color:  var(--blue-300);
+  --toggle-bg:    #0f1b33;
+  --toggle-color: var(--blue-300);
+}
+
+/* ── Reset ────────────────────────────────────────────────────────────────── */
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Base — mobile first ──────────────────────────────────────────────────── */
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  min-height: 100vh;
+  /* Safe-area support for notch / home indicator */
+  padding:
+    max(1rem, env(safe-area-inset-top))
+    max(0.875rem, env(safe-area-inset-right))
+    max(4rem, calc(3rem + env(safe-area-inset-bottom)))
+    max(0.875rem, env(safe-area-inset-left));
+  background-image:
+    radial-gradient(ellipse at 10% 5%,  var(--glow-1) 0%, transparent 50%),
+    radial-gradient(ellipse at 90% 90%, var(--glow-2)  0%, transparent 50%);
+  transition: background 0.3s, color 0.3s;
+  overscroll-behavior-y: contain;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.container { max-width: 720px; margin: 0 auto; }
+
+/* ── Theme toggle ─────────────────────────────────────────────────────────── */
+
+.theme-toggle {
+  position: fixed;
+  top: max(0.75rem, env(safe-area-inset-top));
+  right: max(0.75rem, env(safe-area-inset-right));
+  z-index: 50;
+  background: var(--toggle-bg);
+  border: 1px solid var(--border);
+  border-radius: 50px;
+  padding: 0.5rem 0.9rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  color: var(--toggle-color);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  min-height: 44px;           /* touch target */
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+.theme-toggle .icon { font-size: 1rem; transition: transform 0.5s; }
+
+/* ── Header ───────────────────────────────────────────────────────────────── */
+
+header {
+  text-align: center;
+  /* Push header below the fixed toggle on mobile */
+  padding-top: 3.5rem;
+  margin-bottom: 1.5rem;
+  animation: fadeDown 0.7s ease both;
+}
+
+header h1 {
+  font-size: clamp(1.8rem, 9vw, 2.8rem);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+  color: var(--text);
+}
+header h1 em { font-style: italic; font-weight: 400; color: var(--accent); }
+header p {
+  margin-top: 0.4rem;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-500);
+  opacity: 0.8;
+}
+
+/* ── Timer card ───────────────────────────────────────────────────────────── */
+
+.timer-card {
+  background: var(--card-dark);
+  border-radius: 16px;
+  padding: 1.5rem 1.25rem;
+  margin-bottom: 1rem;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.7s 0.1s ease both;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2), 0 4px 12px rgba(0,0,0,0.12);
+}
+.timer-card::after {
+  content: '';
+  position: absolute;
+  top: -60px; right: -60px;
+  width: 200px; height: 200px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(59,130,246,0.25) 0%, transparent 70%);
+  pointer-events: none;
+}
+.timer-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--blue-700), var(--blue-400), var(--blue-700));
+  border-radius: 16px 16px 0 0;
+}
+.timer-card h2 {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--blue-400);
+  margin-bottom: 0.875rem;
+  position: relative;
+}
+
+.timer-display {
+  display: block;
+  font-size: clamp(4rem, 20vw, 6rem);
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1;
+  letter-spacing: -0.04em;
+  transition: color 0.4s;
+  position: relative;
+}
+.timer-display.done { color: var(--blue-300); }
+.timer-card.running .timer-display { animation: pulse 2s ease-in-out infinite; }
+
+.progress-bar {
+  margin-top: 1.1rem;
+  height: 6px;                /* thicker — easier to see on mobile */
+  background: rgba(255,255,255,0.08);
+  border-radius: 4px;
+  overflow: hidden;
+}
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--blue-700), var(--blue-400));
+  border-radius: 4px;
+  transition: width 1s linear;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1.1rem;
+  position: relative;
+}
+
+.btn {
+  flex: 1;
+  padding: 0.875rem 1rem;     /* taller — better touch target */
+  border: none;
+  border-radius: 12px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: all 0.15s;
+  min-height: 48px;           /* touch target */
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue-500), var(--blue-700));
+  color: #fff;
+  box-shadow: 0 4px 14px rgba(59,130,246,0.4);
+}
+.btn-primary:active { transform: scale(0.97); box-shadow: 0 2px 8px rgba(59,130,246,0.3); }
+
+.btn-secondary {
+  background: rgba(255,255,255,0.06);
+  color: rgba(255,255,255,0.55);
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.btn-secondary:active { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+
+/* ── Stats ────────────────────────────────────────────────────────────────── */
+
+.stats-row {
+  display: flex;
+  gap: 0.625rem;
+  margin-bottom: 1rem;
+  animation: fadeUp 0.7s 0.2s ease both;
+}
+.stat-item {
+  flex: 1;
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 0.875rem 0.5rem;
+  border: 1px solid var(--border);
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(59,130,246,0.07);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.stat-item dd {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  letter-spacing: -0.02em;
+}
+.stat-item dd.accent { color: var(--blue-500); }
+.stat-item dt {
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.55;
+  margin-top: 0.3rem;
+}
+
+/* ── Calendar ─────────────────────────────────────────────────────────────── */
+
+.calendar-section { animation: fadeUp 0.7s 0.3s ease both; }
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.875rem;
+}
+.calendar-header h2 {
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+  opacity: 0.7;
+}
+.month-nav { display: flex; align-items: center; gap: 0.5rem; }
+.month-nav h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text);
+  min-width: 110px;
+  text-align: center;
+}
+
+.nav-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  cursor: pointer;
+  color: var(--blue-600);
+  font-size: 1rem;
+  /* 44×44 touch target on mobile */
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s;
+  box-shadow: 0 1px 4px rgba(59,130,246,0.08);
+}
+.nav-btn:active {
+  background: var(--blue-500);
+  color: #fff;
+  border-color: var(--blue-500);
+  box-shadow: 0 3px 10px rgba(59,130,246,0.3);
+}
+
+.calendar-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 3px;
+  table-layout: fixed;
+}
+.calendar-table thead th {
+  text-align: center;
+  font-size: 0.6rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--blue-600);
+  opacity: 0.5;
+  padding: 0.5rem 0;
+}
+.calendar-table tbody td {
+  text-align: center;
+  font-size: 0.75rem;
+  border-radius: 9px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--text);
+  transition: all 0.15s;
+  position: relative;
+  padding: 0;
+}
+.calendar-table tbody td button {
+  width: 100%;
+  aspect-ratio: 1;
+  min-height: 42px;           /* touch target */
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9px;
+  transition: background 0.12s;
+}
+.calendar-table tbody td.empty { background: transparent; border-color: transparent; }
+.calendar-table tbody td.today { border-color: var(--blue-500); background: var(--today-bg); }
+.calendar-table tbody td.today button { color: var(--today-color); font-weight: 700; }
+.calendar-table tbody td.played {
+  background: linear-gradient(135deg, var(--blue-700), var(--blue-500));
+  border-color: transparent;
+  box-shadow: 0 3px 10px rgba(59,130,246,0.35);
+}
+.calendar-table tbody td.played button { color: #fff; font-weight: 600; }
+.calendar-table tbody td.played::after {
+  content: '♪';
+  position: absolute;
+  bottom: 2px; right: 3px;
+  font-size: 0.45rem;
+  opacity: 0.7;
+  pointer-events: none;
+  color: var(--blue-200);
+}
+.calendar-table tbody td.future { opacity: 0.28; }
+.calendar-table tbody td.future button { cursor: default; }
+
+/* Active feedback on calendar cells (touch) */
+.calendar-table tbody td:not(.empty):not(.future):not(.played):active {
+  border-color: var(--blue-400);
+  background: var(--today-bg);
+}
+
+/* ── Toast ────────────────────────────────────────────────────────────────── */
+
+.toast {
+  position: fixed;
+  bottom: max(1.5rem, env(safe-area-inset-bottom));
+  left: 0.875rem;
+  right: 0.875rem;
+  text-align: center;
+  transform: translateY(6rem);
+  background: var(--blue-900);
+  color: var(--blue-200);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 500;
+  padding: 0.875rem 1.25rem;
+  border-radius: 14px;
+  border-top: 3px solid var(--blue-400);
+  box-shadow: 0 8px 30px rgba(9,30,70,0.3);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 100;
+}
+.toast.show { transform: translateY(0); }
+
+/* ── Footer ───────────────────────────────────────────────────────────────── */
+
+.footer {
+  text-align: center;
+  margin-top: 2.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.footer p {
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.45;
+}
+
+/* ── Hover states — desktop / mouse only ──────────────────────────────────── */
+
+@media (hover: hover) {
+  .theme-toggle:hover {
+    background: var(--blue-500);
+    color: #fff;
+    border-color: var(--blue-500);
+  }
+  .theme-toggle:hover .icon { transform: rotate(25deg); }
+
+  .btn-primary:hover {
+    background: linear-gradient(135deg, var(--blue-400), var(--blue-600));
+    box-shadow: 0 6px 20px rgba(59,130,246,0.5);
+    transform: translateY(-1px);
+  }
+  .btn-secondary:hover {
+    background: rgba(255,255,255,0.1);
+    color: rgba(255,255,255,0.75);
+    border-color: rgba(255,255,255,0.25);
+  }
+
+  .stat-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(59,130,246,0.13);
+  }
+
+  .nav-btn:hover {
+    background: var(--blue-500);
+    color: #fff;
+    border-color: var(--blue-500);
+    box-shadow: 0 3px 10px rgba(59,130,246,0.3);
+  }
+
+  .calendar-table tbody td:not(.empty):not(.future):not(.played):hover {
+    border-color: var(--blue-400);
+    background: var(--today-bg);
+  }
+}
+
+/* ── Tablet & desktop scale-up ────────────────────────────────────────────── */
+
+@media (min-width: 540px) {
+  body { padding: 2rem 1.5rem 5rem; }
+
+  header {
+    padding-top: 0;
+    margin-top: 0.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .timer-card { padding: 1.75rem 1.5rem; }
+
+  .progress-bar { height: 4px; }
+
+  .btn { font-size: 0.8rem; padding: 0.75rem 1rem; min-height: 44px; }
+
+  .stat-item { padding: 1rem 0.75rem; }
+  .stat-item dd { font-size: 2rem; }
+  .stat-item dt { font-size: 0.57rem; letter-spacing: 0.12em; }
+
+  .nav-btn { width: 36px; height: 36px; font-size: 0.85rem; border-radius: 8px; }
+
+  .calendar-table { border-spacing: 4px; }
+  .calendar-table tbody td button { min-height: 36px; font-size: 0.72rem; }
+  .calendar-table thead th { font-size: 0.58rem; }
+
+  .toast { left: 50%; right: auto; transform: translateX(-50%) translateY(5rem); text-align: left; }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+}
+
+@media (min-width: 720px) {
+  body { padding: 2.5rem 1rem 5rem; }
+
+  header { margin-top: 0; margin-bottom: 2.5rem; }
+
+  .timer-card { padding: 2rem 1.75rem; margin-bottom: 1.25rem; }
+
+  .btn { font-size: 0.78rem; border-radius: 10px; }
+
+  .stats-row { gap: 0.75rem; margin-bottom: 1.25rem; }
+  .stat-item dd { font-size: 2.1rem; }
+
+  .nav-btn { width: 28px; height: 28px; font-size: 0.75rem; }
+
+  .calendar-header { margin-bottom: 1rem; }
+}
+
+/* ── Animations ───────────────────────────────────────────────────────────── */
+
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.55; }
+}
+
+/* Reduce motion for accessibility */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
